@@ -15,6 +15,21 @@ An end-to-end **Data Engineering** pipeline built with a modern stack using **Mi
 
 ---
 
+## 🧠 Project Architecture
+
+Below is a high-level view of the end-to-end data pipeline architecture:
+
+![Architecture](./images/tlc_pipeline_architecture.jpeg)
+
+**Flow Summary:**
+
+- Raw NYC TLC data → MinIO (Data Lake)
+- Spark ETL & Modeling
+- PostgreSQL (Star Schema)
+- Power BI Dashboards
+
+---
+
 ## 🛠️ Stack
 
 - ⚙️ **MinIO** – Data lake / object storage
@@ -44,12 +59,13 @@ mc cp yellow_tripdata_2024-01.parquet localminio/tlc-data/
 
 Using **PySpark**, we:
 
-- ✅ Removed invalid GPS coordinates
 - ✅ Dropped null & duplicate records
 - ✅ Filtered out trips with:
   - Zero/negative distance or fare
   - Pickup/dropoff year outside range
   - Invalid rate codes / payment types
+- ✅ Encoded categorical columns
+- ✅ Add Columns 
 
 **📊 Before:** `48M rows`\
 **🧼 After:** `41M rows`
@@ -61,7 +77,8 @@ Using **PySpark**, we:
 Data modeling was performed **inside Spark**, producing a well-structured star schema exported to PostgreSQL.
 
 
-
+- `fact_trips` 
+  
 - `dim_time` – Time breakdown (hour, day, month, weekday)
 - `dim_vendor` – Taxi vendors (1=Creative, 2=Verifone)
 - `dim_payment_type` – Payment methods
@@ -69,6 +86,14 @@ Data modeling was performed **inside Spark**, producing a well-structured star s
 - `dim_pickup_location` – Zones & coordinates
 - `dim_dropoff_location` – Zones & coordinates
 - `dim_trip_category` – Derived trip types (e.g. short, long)
+
+---
+
+## 🧱 Data Model (Star Schema)
+
+This is the dimensional model used for analytics:
+
+![Data Model](./images/tlc_star_schema.png)
 
 ---
 
@@ -89,4 +114,11 @@ Power BI connects directly to PostgreSQL to create:
 ---
 
 
+## 📊 Power BI Dashboards
 
+
+![Dashboard 1](./images/NCY_Taxi_Dashboard_pages-to-jpg-0001.jpg)
+
+![Dashboard 2](./images/NCY_Taxi_Dashboard_pages-to-jpg-0002.jpg)
+
+---
