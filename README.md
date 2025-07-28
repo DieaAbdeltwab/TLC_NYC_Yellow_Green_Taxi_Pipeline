@@ -93,7 +93,7 @@ Data modeling was performed **inside Spark**, producing a well-structured star s
 
 This is the dimensional model used for analytics:
 
-![Data Model](./images/tlc_star_schema.png)
+![Data Model](./images/tlc_star_schema.jpeg)
 
 ---
 
